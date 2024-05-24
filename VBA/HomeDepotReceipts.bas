@@ -23,19 +23,19 @@ Sub ExtractTEXTfromPDFs()
     If folderPath = "" Then Exit Sub
     
     ' Path to Python script (assuming it's in the same folder as the Excel file)
-    pythonScriptPath = "O:\OneDrive\03_PROFESSIONAL\OXYZEN Digital\Digital\GitHub\ProcessHomeDepotReceipts\ExtractTextFromPDFs.py"
+    'pythonScriptPath = "O:\OneDrive\03_PROFESSIONAL\OXYZEN Digital\Digital\GitHub\ProcessHomeDepotReceipts\ExtractTextFromPDFs.py"
     
     ' Run Python script with folder path as a parameter
-    pythonProcess = Shell("python """ & pythonScriptPath & """ """ & folderPath & """", vbHide)
+    'pythonProcess = Shell("python """ & pythonScriptPath & """ """ & folderPath & """", vbHide)
     
     ' Get process handle
-    processHandle = OpenProcess(0, 0, pythonProcess)
+    'processHandle = OpenProcess(0, 0, pythonProcess)
     
     ' Wait for Python script to finish
-    WaitForSingleObject processHandle, INFINITE
+    'WaitForSingleObject processHandle, INFINITE
     
     ' Close process handle
-    CloseHandle processHandle
+    'CloseHandle processHandle
     
     ' Call CVS extraction process and fill the cells.
     ExtractDataFromPythonScript (folderPath)
@@ -97,7 +97,7 @@ Sub ExtractDataFromPythonScript(folderPath As String)
     
     ' CSV file path
     Dim csvFilePath As String
-    csvFilePath = "O:\OneDrive\03_PROFESSIONAL\OXYZEN Digital\Digital\GitHub\ProcessHomeDepotReceipts\output.csv"
+    csvFilePath = folderPath & "\output.csv"
     
     ' Check if the CSV file exists
     If Dir(csvFilePath) <> "" Then

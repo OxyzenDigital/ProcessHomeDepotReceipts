@@ -84,7 +84,7 @@ def main():
                 reader = PdfReader(file)
                 data = ""
                 for page in reader.pages:
-                    data += page.extract_text()
+                    data += page.extract_text()    
 
             file_data = {}
 
