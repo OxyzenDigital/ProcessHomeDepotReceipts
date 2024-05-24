@@ -3,6 +3,9 @@ import csv
 import re
 import json
 from datetime import datetime
+import argparse
+import sys
+from PyPDF2 import PdfReader
 
 # Function to extract data between start and end keys
 def extract_data(data, start_key, end_keys):
@@ -52,12 +55,17 @@ def write_to_csv(csv_data, output_file_path):
 
 # Main function
 def main():
+    # Argument parser
+    parser = argparse.ArgumentParser(description="Extract data from PDF files.")
+    parser.add_argument("folder_path", help="Path to the folder containing PDF files.")
+    args = parser.parse_args()
+
     # Path to JSON configuration file (relative to the script's location)
-    script_dir = os.path.dirname(__file__)
+    script_dir = os.path.dirname(os.path.abspath(__file__))
     json_file_path = os.path.join(script_dir, "RegressionSEarchTerms_HomeDepotReceipts.json")
 
     # Path to folder containing text data files (relative to the script's location)
-    folder_path = os.path.join(script_dir, "PDFs")
+    folder_path = args.folder_path
 
     # Read search terms from JSON file
     search_terms = read_search_terms_from_json(json_file_path)
@@ -68,12 +76,15 @@ def main():
     # Data extraction date
     data_extraction_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-    # Iterate over text data files in the folder
+    # Iterate over PDF data files in the folder
     for filename in os.listdir(folder_path):
-        if filename.endswith('.txt'):
+        if filename.endswith('.pdf'):
             file_path = os.path.join(folder_path, filename)
-            with open(file_path, 'r', encoding='utf-8') as file:
-                data = file.read()
+            with open(file_path, 'rb') as file:  # Open in binary mode for PyPDF2
+                reader = PdfReader(file)
+                data = ""
+                for page in reader.pages:
+                    data += page.extract_text()
 
             file_data = {}
 
@@ -114,11 +125,25 @@ def main():
             file_data["Data Extraction Date"] = data_extraction_date
             file_data["File Path"] = file_path
 
+            # Append file data to CSV data
             csv_data.append(file_data)
 
-    # Write data to CSV file
-    output_file_path = os.path.join(script_dir, "output.csv")
+    # Write data to CSV file in the same folder as the text files
+    # output_folder = os.path.dirname(folder_path)
+    output_file_path = os.path.join(folder_path, "output.csv")
     write_to_csv(csv_data, output_file_path)
+
+    # Write debug information to a text file with the script name and prefix "debug"
+    script_name = os.path.splitext(os.path.basename(__file__))[0]
+    debug_file_name = f"debug_{script_name}.log"
+    debug_file_path = os.path.join(folder_path, debug_file_name)
+
+    # Print debug information
+    debug_info = f"Python script ran with the following arguments:\n"
+    debug_info += f"Arguments: {sys.argv}\n"
+    debug_info += f"Folder Path: {folder_path}\n\n"
+    with open(debug_file_path, 'w') as debug_file:
+        debug_file.write(debug_info)
 
 # Entry point of the script
 if __name__ == "__main__":
