@@ -1,0 +1,13 @@
+{
+    "searchTerms": [
+        {"startKey": "Customer Receipt", "endKey": "CDT", "name": "Purchase Date"},
+        {"startKey": "Customer Receipt", "endKey": "CST", "name": "Purchase Date"},
+        {"startKey": "Store #", "endKey": "Location", "name": "Store #"},
+        {"startKey": "Order #", "endKey": "\\n"},
+        {"startKey": "Receipt #", "endKey": "\\n", "name": "Receipt #"},
+        {"startKey": "(.*?)PO / Job Name", "endKey": "PO / Job Name", "name": "PO / Job Name"},
+        {"startKey": "QtySubtotal", "endKey": "90 DAY", "name": "Item Purchased"},
+        {"startKey": "Order Total", "endKey": "\\n"},
+        {"startKey": "Payment Method", "endKey": "Charged", "name": "Payment Method"}
+    ]
+}
