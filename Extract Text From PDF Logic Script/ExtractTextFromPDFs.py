@@ -39,7 +39,7 @@ extract_text_from_pdfs(folder_path)
 
 # Write debug information to a text file with the script name and prefix "debug"
 script_name = os.path.splitext(os.path.basename(__file__))[0]
-debug_file_name = f"debug_{script_name}.log"
+debug_file_name = f"___debug_{script_name}.log"
 debug_file_path = os.path.join(folder_path, debug_file_name)
 
 # Print debug information
