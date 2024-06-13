@@ -9,6 +9,8 @@
         {"startKey": "(.*?)PO / Job Name", "endKey": "PO / Job Name", "name": "PO / Job Name"},
         {"startKey": "QtySubtotal", "endKey": "90 DAY", "name": "Item Purchased"},
         {"startKey": "Order Total", "endKey": "\\n", "name": "Order Total"},
+        {"startKey": "Invoice Total", "endKey": "\\n", "name": "Order Total"},
+        {"startKey": "Total", "endKey": "\\n", "name": "Order Total"},
         {"startKey": "Payment Method", "endKey": "Charged", "name": "Payment Method"}
     ]
 }

@@ -84,7 +84,7 @@ def main():
                 reader = PdfReader(file)
                 data = ""
                 for page in reader.pages:
-                    data += page.extract_text()    
+                    data += page.extract_text()
 
             file_data = {}
 
@@ -115,6 +115,13 @@ def main():
                 if start_key == "QtySubtotal" and extracted_value:
                     extracted_value = format_data(extracted_value)
 
+                # Handle special case for Order Total with multiple possible start keys
+                if name == "Order Total" and not extracted_value:
+                    for alternate_key in ["Invoice Total", "Total"]:
+                        extracted_value = extract_data(data, alternate_key, ["\\n"])
+                        if extracted_value:
+                            break
+
                 # Only update if extracted_value is non-empty, otherwise keep existing value
                 if extracted_value:
                     file_data[name] = extracted_value
@@ -129,7 +136,6 @@ def main():
             csv_data.append(file_data)
 
     # Write data to CSV file in the same folder as the text files
-    # output_folder = os.path.dirname(folder_path)
     output_file_path = os.path.join(folder_path, "output.csv")
     write_to_csv(csv_data, output_file_path)
 
